@@ -1,6 +1,6 @@
 import os
 import re
-from toolbox.ts2py.block_remove import block_remove
+from toolbox.ts2py.block_remove import block_remove, block_replace
 
 DEBUG = False
 
@@ -62,6 +62,7 @@ def main(filename, out_dir):
 
     # block remove all interface block <TS>
     source = block_remove(source, 'interface')
+    source = block_replace(source, 'enum', function)
 
     # remove necessary keywords
     unnecessary_kw = [
