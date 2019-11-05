@@ -1,20 +1,3 @@
-"""
-(C) Copyright 2017-2019 OpenVidu (https:#openvidu.io/)
-
-Licensed under the Apache License, Version 2.0 (the "License")
-you may not use self file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http:#www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-"""
-
 from requests import requests
 from .Connection import Connection
 from .Publisher import Publisher
@@ -27,8 +10,6 @@ from .RecordingLayout import RecordingLayout
 """
 @hidden
 """
-interface ObjMap<T>
-    [s: str]: T
 
 
 
@@ -39,15 +20,15 @@ class OpenVidu:
     """
     @hidden
     """
-    def hostname: str
+    hostname: str
     """
     @hidden
     """
-    def port: int
+    port: int
     """
     @hidden
     """
-    def basicAuth: str
+    basicAuth: str
 
     """
     @hidden
@@ -111,8 +92,8 @@ class OpenVidu:
 
                 .catch(error =>
                     reject(error)
-
-
+                )
+        )
 
 
     startRecording(sessionId: str)
@@ -137,11 +118,11 @@ class OpenVidu:
     def startRecording(sessionId: str, param2: str | RecordingProperties)
         return Promise<Recording>((resolve, reject) =>
 
-            data
+            data = None
 
             if  not  not param2:
                 if  not (typeof param2 == 'string'):
-                    properties = <RecordingProperties> param2
+                    properties = <RecordingProperties>param2
                     data = {
                         "session": sessionId,
                         "name":  not  not properties.name ? properties.name "": '',
@@ -162,14 +143,14 @@ class OpenVidu:
                         session: sessionId,
                         name: param2,
                         outputMode: Recording.OutputMode.COMPOSED
-
+                    )
 
             else:
                 data = JSON.stringify(
                     session: sessionId,
                     name: '',
                     outputMode: Recording.OutputMode.COMPOSED
-
+                )
 
 
             requests.post(
@@ -190,7 +171,7 @@ class OpenVidu:
                         if  not  not activeSession:
                             activeSession.recording = true
                         else:
-                            console.warn('No active session found for sessionId \'' + r.sessionId + '\'. This instance of OpenVidu Node Client didn\'t create self session')
+                            console.warn("No active session found for sessionId '" + r.sessionId + "'. This instance of OpenVidu Node Client didn't create self session")
 
                         resolve(r)
                     else:
@@ -210,8 +191,8 @@ class OpenVidu:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-
-
+            )
+        )
 
 
     """
@@ -244,7 +225,7 @@ class OpenVidu:
                         if  not  not activeSession:
                             activeSession.recording = false
                         else:
-                            console.warn('No active session found for sessionId \'' + r.sessionId + '\'. This instance of OpenVidu Node Client didn\'t create self session')
+                            console.warn("No active session found for sessionId '" + r.sessionId + "'. This instance of OpenVidu Node Client didn't create self session")
 
                         resolve(r)
                     else:
@@ -263,8 +244,8 @@ class OpenVidu:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-
-
+            )
+        )
 
 
     """
@@ -308,8 +289,8 @@ class OpenVidu:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-
-
+            )
+        )
 
 
     """
@@ -356,8 +337,8 @@ class OpenVidu:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-
-
+            )
+        )
 
 
     """
@@ -402,8 +383,8 @@ class OpenVidu:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-
-
+            )
+        )
 
 
     """
@@ -429,11 +410,11 @@ class OpenVidu:
                         # Array to store fetched sessionIds and later remove closed sessions
                         fetchedSessionIds: str[] = []
                         # Boolean to store if any Session has changed
-                        hasChanged = false
+                        hasChanged = false = None
 
                         for session  in res.data.content:
                             fetchedSessionIds.push(session.sessionId)
-                            sessionIndex = -1
+                            sessionIndex = -1 = None
                             storedSession = self.activeSessions.find((s, index) =>
                                 if s.sessionId == session.sessionId:
                                     sessionIndex = index
@@ -441,7 +422,7 @@ class OpenVidu:
                                 else:
                                     return false
 
-
+                            )
                             if  not  not storedSession:
                                 fetchedSession: Session = Session(self).resetSessionWithJson(session)
                                 changed: boolean =  not storedSession.equalTo(fetchedSession)
@@ -449,24 +430,24 @@ class OpenVidu:
                                     storedSession = fetchedSession
                                     self.activeSessions[sessionIndex] = storedSession
 
-                                console.log('Available session \'' + storedSession.sessionId + '\' info fetched. Any change: ' + changed)
+                                console.log("Available session '" + storedSession.sessionId + "' info fetched. Any change: " + changed)
                                 hasChanged = hasChanged || changed
                             else:
                                 self.activeSessions.push(Session(self, session))
-                                console.log('New session \'' + session.sessionId + '\' info fetched')
+                                console.log("New session '" + session.sessionId + "' info fetched")
                                 hasChanged = true
 
-
+                        )
                         # Remove closed sessions from activeSessions array
                         self.activeSessions = self.activeSessions.filter(session =>
                             if fetchedSessionIds.includes(session.sessionId):
                                 return true
                             else:
-                                console.log('Removing closed session \'' + session.sessionId + '\'')
+                                console.log("Removing closed session '" + session.sessionId + "'")
                                 hasChanged = true
                                 return false
 
-
+                        )
                         console.log('Active sessions info fetched: ', fetchedSessionIds)
                         resolve(hasChanged)
                     else:
@@ -488,8 +469,8 @@ class OpenVidu:
                     console.error('Error', error.message)
                     reject(Error(error.message))
 
-
-
+            )
+        )
 
 
     """
@@ -531,13 +512,13 @@ class OpenVidu:
                             "localSdp": publisherExtended.localSdp,
                             "remoteSdp": publisherExtended.remoteSdp
                         }
-
+                    
                     newPublisher['localCandidatePair'] = parseRemoteCandidatePair(newPublisher['webRtc'].kms.remoteCandidate)
                     if  not  not publisherExtended.serverStats:
                         newPublisher['webRtc'].kms.serverStats = publisherExtended.serverStats
 
                     publisherArray.push(newPublisher)
-
+                )
                 subscriberArray = []
                 for sub  in connection.subscribers:
                     subscriberExtended = connectionExtended.subscribers.find(s => s.streamId == sub)
@@ -557,17 +538,17 @@ class OpenVidu:
                             "localSdp": subscriberExtended.localSdp,
                             "remoteSdp": subscriberExtended.remoteSdp
                         }
-
+                    
                     subAux['localCandidatePair'] = parseRemoteCandidatePair(subAux['webRtc'].kms.remoteCandidate)
                     if  not  not subscriberExtended.serverStats:
                         subAux['webRtc'].kms.serverStats = subscriberExtended.serverStats
 
                     subscriberArray.push(subAux)
-
+                )
                 connection.publishers = publisherArray
                 connection.subscribers = subscriberArray
 
-
+        
 
         parseRemoteCandidatePair = (candidateStr: str) =>
             if  not candidateStr:
@@ -581,8 +562,8 @@ class OpenVidu:
                 candidateType: array[7],
                 priority: array[3],
                 raw: candidateStr
-
-
+            
+        
 
         return Promise< changes: boolean, sessionChanges >((resolve, reject) =>
             requests.get(
@@ -599,13 +580,13 @@ class OpenVidu:
                         # Array to store fetched sessionIds and later remove closed sessions
                         fetchedSessionIds: str[] = []
                         # Global changes
-                        globalChanges = false
+                        globalChanges = false = None
                         # Collection of sessionIds telling whether each one of them has changed or not
                         sessionChanges = {}
 
                         for session  in res.data.content:
                             fetchedSessionIds.push(session.sessionId)
-                            sessionIndex = -1
+                            sessionIndex = -1 = None
                             storedSession = self.activeSessions.find((s, index) =>
                                 if s.sessionId == session.sessionId:
                                     sessionIndex = index
@@ -613,51 +594,51 @@ class OpenVidu:
                                 else:
                                     return false
 
-
+                            )
                             if  not  not storedSession:
                                 fetchedSession: Session = Session(self).resetSessionWithJson(session)
                                 for connection  in fetchedSession.activeConnections:
                                     addWebRtcStatsToConnections(connection, session.connections.content)
+                                )
 
-
-                                changed =  not storedSession.equalTo(fetchedSession)
+                                changed =  not storedSession.equalTo(fetchedSession) = None
                                 if  not changed)  # Check if server webrtc information has changed in any Publisher object (Session.equalTo does not check Publisher.webRtc auxiliary object:
                                     for (connection, index1)  in fetchedSession.activeConnections:
                                         for (index2 = 0; (index2 < connection['publishers'].length &&  not changed) = None index2++)
                                             changed = changed || JSON.stringify(connection['publishers'][index2]['webRtc'])  not == JSON.stringify(storedSession.activeConnections[index1]['publishers'][index2]['webRtc'])
 
-
+                                    )
 
 
                                 if changed:
                                     storedSession = fetchedSession
                                     self.activeSessions[sessionIndex] = storedSession
 
-                                console.log('Available session \'' + storedSession.sessionId + '\' info fetched. Any change: ' + changed)
+                                console.log("Available session '" + storedSession.sessionId + "' info fetched. Any change: " + changed)
                                 sessionChanges[storedSession.sessionId] = changed
                                 globalChanges = globalChanges || changed
                             else:
                                 newSession = Session(self, session)
                                 for connection  in newSession.activeConnections:
                                     addWebRtcStatsToConnections(connection, session.connections.content)
-
+                                )
                                 self.activeSessions.push(newSession)
-                                console.log('New session \'' + session.sessionId + '\' info fetched')
+                                console.log("New session '" + session.sessionId + "' info fetched")
                                 sessionChanges[session.sessionId] = true
                                 globalChanges = true
 
-
+                        )
                         # Remove closed sessions from activeSessions array
                         self.activeSessions = self.activeSessions.filter(session =>
                             if fetchedSessionIds.includes(session.sessionId):
                                 return true
                             else:
-                                console.log('Removing closed session \'' + session.sessionId + '\'')
+                                console.log("Removing closed session '" + session.sessionId + "'")
                                 sessionChanges[session.sessionId] = true
                                 globalChanges = true
                                 return false
 
-
+                        )
                         console.log('Active sessions info fetched: ', fetchedSessionIds)
                         resolve(changes: globalChanges, sessionChanges)
                     else:
@@ -677,8 +658,8 @@ class OpenVidu:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-
-
+            )
+        )
 
 
     # tslint:enable:no-string-literal
@@ -696,7 +677,7 @@ class OpenVidu:
             self.hostname = self.urlOpenViduServer.split(':')[0].replace(/\#g, '')
             self.port = parseInt(self.urlOpenViduServer.split(':')[1].replace(/\#g, ''))
         else:
-            console.error('URL format incorrect: it must contain hostname and port (current value: \'' + self.urlOpenViduServer + '\')')
+            console.error("URL format incorrect: it must contain hostname and port (current value: '" + self.urlOpenViduServer + "')")
 
 
 

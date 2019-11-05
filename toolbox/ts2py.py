@@ -1,9 +1,14 @@
 import os
 import re
 
-DEBUG = False
+if os.name == 'nt':
+    system = 'windows'
+    base_dir = 'D:/dev/proj.node/openvidu/openvidu-node-client/src/'
+else:
+    system = 'mac'
+    base_dir = '/Users/exiszhang/proj-exis/openvidu/openvidu-node-client/src/'
 
-base_dir = '/Users/exiszhang/proj-exis/openvidu/openvidu-node-client/src/'
+DEBUG = False
 
 file_name = os.path.join(base_dir, 'OpenVidu.ts')
 
@@ -60,19 +65,23 @@ for regex in regex_findall:
 
         source = source.replace(f, f_to)
 
-# block remove
-
-position_interface = source.find('interface')
-open_count = 0
-close_count = 0
-while open_count != 0 and close_count != open_count:
-    for character in source[position_interface:]:  # starting from that position
-        if character == '{':  # block start
+# block remove all interface block <TS>
+while source.find('interface') != -1:
+    position_interface_start = source.find('interface')
+    position_interface = position_interface_start
+    open_count = 0
+    close_count = 0
+    while open_count == 0 or close_count != open_count:
+        character = source[position_interface]
+        if character == '{':  # block startk
             open_count += 1
         if character == '}':
             close_count += 1
 
+        position_interface += 1
 
+    to_replace = source[position_interface_start:position_interface]
+    source = source.replace(to_replace, '')
 
 # remove necessary keywords
 unnecessary_kw = [
