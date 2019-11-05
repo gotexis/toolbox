@@ -18,4 +18,4 @@ if not base_dir:
     raise FileNotFoundError()
 
 for file in os.listdir(base_dir):
-    main(os.path.join(base_dir, file), os.path.join('../example/out/'))
+    main(os.path.join(base_dir, file), os.path.join('../example/output/'))
