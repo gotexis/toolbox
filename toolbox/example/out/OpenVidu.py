@@ -72,7 +72,7 @@ class OpenVidu:
     @param urlOpenViduServer Public accessible IP where your instance of OpenVidu Server is up an running
     @param secret Secret used on OpenVidu Server initialization
     """
-    def __init__(urlOpenViduServer: str, secret: str):
+    def __init__(self, urlOpenViduServer: str, secret: str):
         self.setHostnameAndPort()
         self.basicAuth = self.getBasicAuth(secret)
 
@@ -425,7 +425,7 @@ class OpenVidu:
                             )
                             if  not  not storedSession:
                                 fetchedSession: Session = Session(self).resetSessionWithJson(session)
-                                changed: boolean =  not storedSession.equalTo(fetchedSession)
+                                changed: boolean =  not storedSession.def __eq__(self, fetchedSession)
                                 if changed:
                                     storedSession = fetchedSession
                                     self.activeSessions[sessionIndex] = storedSession
@@ -601,7 +601,7 @@ class OpenVidu:
                                     addWebRtcStatsToConnections(connection, session.connections.content)
                                 )
 
-                                changed =  not storedSession.equalTo(fetchedSession) = None
+                                changed =  not storedSession.def __eq__(self, fetchedSession) = None
                                 if  not changed)  # Check if server webrtc information has changed in any Publisher object (Session.equalTo does not check Publisher.webRtc auxiliary object:
                                     for (connection, index1)  in fetchedSession.activeConnections:
                                         for (index2 = 0; (index2 < connection['publishers'].length &&  not changed) = None index2++)
