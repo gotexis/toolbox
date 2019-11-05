@@ -6,7 +6,7 @@ DEBUG = False
 
 
 def main(filename, out_dir):
-    base_name = os.path.basename(filename).replace('.ts', '.py')
+    output_name = os.path.basename(filename).replace('.ts', '.py')
     with open(filename) as f:
         source = f.read()
 
@@ -159,5 +159,5 @@ def main(filename, out_dir):
     for char_from, char_to in special_characters.items():
         result = result.replace(char_from, char_to)
 
-    with open(os.path.join(out_dir, base_name), 'w+') as out:
+    with open(os.path.join(out_dir, output_name), 'w+') as out:
         out.write(result)
