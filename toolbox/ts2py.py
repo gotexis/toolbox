@@ -1,6 +1,8 @@
 import os
 import re
 
+DEBUG = False
+
 base_dir = '/Users/exiszhang/proj-exis/openvidu/openvidu-node-client/src/'
 
 file_name = os.path.join(base_dir, 'OpenVidu.ts')
@@ -15,29 +17,38 @@ special_characters = {
 }
 
 regex_remove = [
-    r'Promise<.*?>',
+    r': [A-Z]\w*<.*?>',  # remove Typescript complex types like Promise<S, T>
 ]
 
 regexs = [
     # (regex_pattern (with capture group), replace_to),
-    (r"import {?\s?(\w+)\s?}? from '(.*)';", 'from \\2 import \\1'),
+    (r"import {?\s?(\w+)\s?}? from '(.*)';?", 'from \\2 import \\1'),
     (r"let (.*);", '\\1 = None'),
+    # if block
     (r"if \((.*)\)", 'if \\1:'),
+    # forEach block
+    (r"(\S*)\.forEach\(?(.*)=> {", 'for \\2 in \\1:'),  # will leave closing bracket
 ]
 
+print(f'Running re.remove')
 for regex in regex_remove:
     source = re.sub(regex, '', source)
 
-for regex in regexs:
-    source = re.sub(regex[0], regex[1], source)
+print(f'Running re.sub')
+for r in regexs:
+    print(f'running [regex] {r[0]} [sub] {r[1]}')
+    source = re.sub(r[0], r[1], source)
+    if DEBUG:
+        print('[result]')
+        print(source)
 
 # finding the first re, then within it , find the second re, then replace
-
 regex_findall = [
     # handle js objects (python dicts)
     (r"= {[\s\S]*?}", r"(\w*): ", '"\\1": ')
 ]
 
+print(f'Running nested re.sub')
 for regex in regex_findall:
     found = re.findall(regex[0], source)
     for f in found:
@@ -48,6 +59,20 @@ for regex in regex_findall:
             .replace(special_characters['[CURLY_BRACKET_END]'], '[CURLY_BRACKET_END]')
 
         source = source.replace(f, f_to)
+
+# block remove
+
+position_interface = source.find('interface')
+open_count = 0
+close_count = 0
+while open_count != 0 and close_count != open_count:
+    for character in source[position_interface:]:  # starting from that position
+        if character == '{':  # block start
+            open_count += 1
+        if character == '}':
+            close_count += 1
+
+
 
 # remove necessary keywords
 unnecessary_kw = [
@@ -88,6 +113,8 @@ replaces = [
     ('!', ' not '),
     ('else if', 'elif'),
     (': string', ': str'),
+    ('===', '=='),
+    ('axios', 'requests'),
 ]
 
 for replace in replaces:
@@ -100,29 +127,41 @@ for bad_word in unnecessary_kw:
 lines = source.splitlines()
 for (index, line) in enumerate(lines):
 
-    def
+    def current():
+        # return the current version of the line
+        return lines[index]
+
+    def become(val):
+        # mutate the line to something else
+        lines[index] = val
 
     # remove trailing spaces
-    lines[index] = lines[index].rstrip()
-    # append colon for classes
-    if line.lstrip().startswith(('class', 'def', 'else')) and not line.rstrip().endswith(':'):
-        lines[index] = line + ':'
+    become(current().rstrip())
 
-    # trim irregular indentation
-    extra_space = (len(lines[index]) - len(lines[index].lstrip())) % 4
-    lines[index] = lines[index].replace(' ', '', extra_space)
+    # append colon for [class, def, else]
+    if current().strip().startswith(('class', 'def', 'else')):
+        if not current().strip().endswith(':'):
+            become(current() + ':')
 
     # handle function definition or prop declare in class
-    if lines[index].lstrip().startswith('public'):
-        if lines[index].rstrip().endswith(';'):
+    if current().lstrip().startswith('public'):
+        if current().rstrip().endswith(';'):
             # not function
-            lines[index] = lines[index].replace('public', '')
+            become(current().replace('public', ''))
         else:
             # function
-            lines[index] = lines[index].replace('public', 'def')
+            become(current().replace('public', 'def'))
+
+    # remove line completely if it satisfy certain criteria
+    if current().strip() == ')':  # dangling enclosing ) from if/for
+        become('')
 
     # remove triling comma at the last because it was still useful before
-    lines[index] = lines[index].rstrip(';')
+    become(current().rstrip(';'))
+
+    # trim irregular indentation
+    extra_space = (len(current()) - len(current().lstrip())) % 4
+    become(current().replace(' ', '', extra_space))
 
 result = "\n".join(lines)
 

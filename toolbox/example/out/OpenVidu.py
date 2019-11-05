@@ -15,14 +15,14 @@ limitations under the License.
 
 """
 
-import axios from 'axios'
-import Connection from './Connection'
-import Publisher from './Publisher'
-import Recording from './Recording'
-import RecordingProperties from './RecordingProperties'
-import Session from './Session'
-import SessionProperties from './SessionProperties'
-import RecordingLayout from './RecordingLayout'
+from requests import requests
+from .Connection import Connection
+from .Publisher import Publisher
+from .Recording import Recording
+from .RecordingProperties import RecordingProperties
+from .Session import Session
+from .SessionProperties import SessionProperties
+from .RecordingLayout import RecordingLayout
 
 """
 @hidden
@@ -32,7 +32,7 @@ interface ObjMap<T>
 
 
 
-class OpenVidu :
+class OpenVidu:
 
     Buffer = require('buffer/').Buffer
 
@@ -91,7 +91,7 @@ class OpenVidu :
     @param urlOpenViduServer Public accessible IP where your instance of OpenVidu Server is up an running
     @param secret Secret used on OpenVidu Server initialization
     """
-    def __init__(urlOpenViduServer: str, secret: str) :
+    def __init__(urlOpenViduServer: str, secret: str):
         self.setHostnameAndPort()
         self.basicAuth = self.getBasicAuth(secret)
 
@@ -101,23 +101,23 @@ class OpenVidu :
 
     @returns A Promise that is resolved to the [[Session]] if success and rejected with an Error object if not.
     """
-    def createSession(properties: SessionProperties):
-        return ((resolve, reject) =>
+    def createSession(properties: SessionProperties)
+        return Promise<Session>((resolve, reject) =>
             session = Session(self, properties)
             session.getSessionIdHttp()
                 .then(sessionId =>
                     self.activeSessions.push(session)
                     resolve(session)
-                )
+
                 .catch(error =>
                     reject(error)
-                )
-        )
 
 
-     startRecording(sessionId: str): 
-     startRecording(sessionId: str, name: str): 
-     startRecording(sessionId: str, properties: RecordingProperties): 
+
+
+    startRecording(sessionId: str)
+    startRecording(sessionId: str, name: str)
+    startRecording(sessionId: str, properties: RecordingProperties)
 
     """
     Starts the recording of a [[Session]]
@@ -134,13 +134,13 @@ class OpenVidu :
     - `409`: the session is not configured for using [[MediaMode.ROUTED]] or it is already being recorded
     - `501`: OpenVidu Server recording module is disabled (`openvidu.recording` property set to `false`)
     """
-    def startRecording(sessionId: str, param2: str | RecordingProperties):
-        return ((resolve, reject) =>
+    def startRecording(sessionId: str, param2: str | RecordingProperties)
+        return Promise<Recording>((resolve, reject) =>
 
             data
 
             if  not  not param2:
-                if  not (typeof param2 === 'string'):
+                if  not (typeof param2 == 'string'):
                     properties = <RecordingProperties> param2
                     data = {
                         "session": sessionId,
@@ -149,30 +149,30 @@ class OpenVidu :
                         "hasAudio":  not  not (properties.hasAudio),
                         "hasVideo":  not  not (properties.hasVideo)
                     }
-                    if data.outputMode.toString() === Recording.OutputMode[Recording.OutputMode.COMPOSED]:
+                    if data.outputMode.toString() == Recording.OutputMode[Recording.OutputMode.COMPOSED]:
                         data.resolution =  not  not properties.resolution ? properties.resolution : '1920x1080'
                         data.recordingLayout =  not  not properties.recordingLayout ? properties.recordingLayout : RecordingLayout.BEST_FIT
-                        if data.recordingLayout.toString() === RecordingLayout[RecordingLayout.CUSTOM]:
+                        if data.recordingLayout.toString() == RecordingLayout[RecordingLayout.CUSTOM]:
                             data.customLayout =  not  not properties.customLayout ? properties.customLayout : ''
 
 
                     data = JSON.stringify(data)
-                else :
+                else:
                     data = JSON.stringify(
                         session: sessionId,
                         name: param2,
                         outputMode: Recording.OutputMode.COMPOSED
-                    )
 
-            else :
+
+            else:
                 data = JSON.stringify(
                     session: sessionId,
                     name: '',
                     outputMode: Recording.OutputMode.COMPOSED
-                )
 
 
-            axios.post(
+
+            requests.post(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_RECORDINGS + OpenVidu.API_RECORDINGS_START,
                 data,
 
@@ -181,19 +181,19 @@ class OpenVidu :
                         'Content-Type': 'application/json'
 
 
-            )
+
                 .then(res =>
-                    if res.status === 200:
+                    if res.status == 200:
                         # SUCCESS response from openvidu-server (Recording in JSON format). Resolve Recording
                         r: Recording = Recording(res.data)
-                        activeSession = self.activeSessions.find(s => s.sessionId === r.sessionId)
+                        activeSession = self.activeSessions.find(s => s.sessionId == r.sessionId)
                         if  not  not activeSession:
                             activeSession.recording = true
-                        else :
+                        else:
                             console.warn('No active session found for sessionId \'' + r.sessionId + '\'. This instance of OpenVidu Node Client didn\'t create self session')
 
                         resolve(r)
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -206,12 +206,12 @@ class OpenVidu :
                     # `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     # http.ClientRequest in node.js
                     console.error(error.request)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-            )
-        )
+
+
 
 
     """
@@ -223,10 +223,10 @@ class OpenVidu :
     - `404`: no recording exists for the passed `recordingId`
     - `406`: recording has `starting` status. Wait until `started` status before stopping the recording
     """
-    def stopRecording(recordingId: str):
-        return ((resolve, reject) =>
+    def stopRecording(recordingId: str)
+        return Promise<Recording>((resolve, reject) =>
 
-            axios.post(
+            requests.post(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_RECORDINGS + OpenVidu.API_RECORDINGS_STOP + '/' + recordingId,
                 undefined,
 
@@ -235,19 +235,19 @@ class OpenVidu :
                         'Content-Type': 'application/x-www-form-urlencoded'
 
 
-            )
+
                 .then(res =>
-                    if res.status === 200:
+                    if res.status == 200:
                         # SUCCESS response from openvidu-server (Recording in JSON format). Resolve Recording
                         r: Recording = Recording(res.data)
-                        activeSession = self.activeSessions.find(s => s.sessionId === r.sessionId)
+                        activeSession = self.activeSessions.find(s => s.sessionId == r.sessionId)
                         if  not  not activeSession:
                             activeSession.recording = false
-                        else :
+                        else:
                             console.warn('No active session found for sessionId \'' + r.sessionId + '\'. This instance of OpenVidu Node Client didn\'t create self session')
 
                         resolve(r)
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -259,12 +259,12 @@ class OpenVidu :
                     # The request was made but no response was received `error.request` is an instance of XMLHttpRequest
                     # in the browser and an instance of http.ClientRequest in node.js
                     console.error(error.request)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-            )
-        )
+
+
 
 
     """
@@ -275,10 +275,10 @@ class OpenVidu :
     @returns A Promise that is resolved to the [[Recording]] if it successfully stopped and rejected with an Error object if not. This Error object has as `message` property with the following values:
     - `404`: no recording exists for the passed `recordingId`
     """
-    def getRecording(recordingId: str):
-        return ((resolve, reject) =>
+    def getRecording(recordingId: str)
+        return Promise<Recording>((resolve, reject) =>
 
-            axios.get(
+            requests.get(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_RECORDINGS + '/' + recordingId,
 
                     headers:
@@ -286,12 +286,12 @@ class OpenVidu :
                         'Content-Type': 'application/x-www-form-urlencoded'
 
 
-            )
+
                 .then(res =>
-                    if res.status === 200:
+                    if res.status == 200:
                         # SUCCESS response from openvidu-server (Recording in JSON format). Resolve Recording
                         resolve(Recording(res.data))
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -304,12 +304,12 @@ class OpenVidu :
                     # `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     # http.ClientRequest in node.js
                     console.error(error.request)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-            )
-        )
+
+
 
 
     """
@@ -317,19 +317,19 @@ class OpenVidu :
 
     @returns A Promise that is resolved to an array with all existing recordings
     """
-    def listRecordings():
-        return ((resolve, reject) =>
+    def listRecordings()
+        return Promise<Recording[]>((resolve, reject) =>
 
-            axios.get(
+            requests.get(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_RECORDINGS,
 
                     headers:
                         Authorization: self.basicAuth
 
 
-            )
+
                 .then(res =>
-                    if res.status === 200:
+                    if res.status == 200:
                         # SUCCESS response from openvidu-server (JSON arrays of recordings in JSON format). Resolve list of recordings
                         recordingArray: Recording[] = []
                         responseItems = res.data.items
@@ -339,7 +339,7 @@ class OpenVidu :
                         # Order recordings by time of creation (newest first)
                         recordingArray.sort((r1, r2) => (r1.createdAt < r2.createdAt) ? 1 : ((r2.createdAt < r1.createdAt) ? -1 : 0))
                         resolve(recordingArray)
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -352,12 +352,12 @@ class OpenVidu :
                     # `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     # http.ClientRequest in node.js
                     console.error(error.request)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-            )
-        )
+
+
 
 
     """
@@ -369,10 +369,10 @@ class OpenVidu :
     - `404`: no recording exists for the passed `recordingId`
     - `409`: the recording has `started` status. Stop it before deletion
     """
-    def deleteRecording(recordingId: str):
-        return ((resolve, reject) =>
+    def deleteRecording(recordingId: str)
+        return Promise<Error>((resolve, reject) =>
 
-            axios.delete(
+            requests.delete(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_RECORDINGS + '/' + recordingId,
 
                     headers:
@@ -380,12 +380,12 @@ class OpenVidu :
                         'Content-Type': 'application/x-www-form-urlencoded'
 
 
-            )
+
                 .then(res =>
-                    if res.status === 204:
+                    if res.status == 204:
                         # SUCCESS response from openvidu-server. Resolve undefined
                         resolve(undefined)
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -398,12 +398,12 @@ class OpenVidu :
                     # `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     # http.ClientRequest in node.js
                     console.error(error.request)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-            )
-        )
+
+
 
 
     """
@@ -413,35 +413,35 @@ class OpenVidu :
     @returns A promise resolved to true if any Session status has changed with respect to the server, or to false if not.
     This applies to any property or sub-property of any of the sessions locally stored in OpenVidu Node Client
     """
-    def fetch():
-        return ((resolve, reject) =>
-            axios.get(
+    def fetch()
+        return Promise<boolean>((resolve, reject) =>
+            requests.get(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_SESSIONS,
 
                     headers:
                         Authorization: self.basicAuth
 
 
-            )
+
                 .then(res =>
-                    if res.status === 200:
+                    if res.status == 200:
 
                         # Array to store fetched sessionIds and later remove closed sessions
                         fetchedSessionIds: str[] = []
                         # Boolean to store if any Session has changed
                         hasChanged = false
 
-                        res.data.content.forEach(session =>
+                        for session  in res.data.content:
                             fetchedSessionIds.push(session.sessionId)
                             sessionIndex = -1
                             storedSession = self.activeSessions.find((s, index) =>
-                                if s.sessionId === session.sessionId:
+                                if s.sessionId == session.sessionId:
                                     sessionIndex = index
                                     return true
-                                else :
+                                else:
                                     return false
 
-                            )
+
                             if  not  not storedSession:
                                 fetchedSession: Session = Session(self).resetSessionWithJson(session)
                                 changed: boolean =  not storedSession.equalTo(fetchedSession)
@@ -451,25 +451,25 @@ class OpenVidu :
 
                                 console.log('Available session \'' + storedSession.sessionId + '\' info fetched. Any change: ' + changed)
                                 hasChanged = hasChanged || changed
-                            else :
+                            else:
                                 self.activeSessions.push(Session(self, session))
                                 console.log('New session \'' + session.sessionId + '\' info fetched')
                                 hasChanged = true
 
-                        )
+
                         # Remove closed sessions from activeSessions array
                         self.activeSessions = self.activeSessions.filter(session =>
                             if fetchedSessionIds.includes(session.sessionId):
                                 return true
-                            else :
+                            else:
                                 console.log('Removing closed session \'' + session.sessionId + '\'')
                                 hasChanged = true
                                 return false
 
-                        )
+
                         console.log('Active sessions info fetched: ', fetchedSessionIds)
                         resolve(hasChanged)
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -483,28 +483,28 @@ class OpenVidu :
                     # http.ClientRequest in node.js
                     console.error(error.request)
                     reject(error)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
                     reject(Error(error.message))
 
-            )
-        )
+
+
 
 
     """
     @hidden
     @returns A map paring every existing sessionId with true or false depending on whether it has changed or not
     """
-    fetchWebRtc():
+    fetchWebRtc()
 
         # tslint:disable:no-string-literal
         addWebRtcStatsToConnections = (connection: Connection, connectionsExtendedInfo: any) =>
-            connectionExtended = connectionsExtendedInfo.find(c => c.connectionId === connection.connectionId)
+            connectionExtended = connectionsExtendedInfo.find(c => c.connectionId == connection.connectionId)
             if  not  not connectionExtended:
                 publisherArray = []
-                connection.publishers.forEach(pub =>
-                    publisherExtended = connectionExtended.publishers.find(p => p.streamId === pub.streamId)
+                for pub  in connection.publishers:
+                    publisherExtended = connectionExtended.publishers.find(p => p.streamId == pub.streamId)
                     pubAux = {}
                     # Standard properties
                     pubAux['streamId'] = pub.streamId
@@ -537,10 +537,10 @@ class OpenVidu :
                         newPublisher['webRtc'].kms.serverStats = publisherExtended.serverStats
 
                     publisherArray.push(newPublisher)
-                )
+
                 subscriberArray = []
-                connection.subscribers.forEach(sub =>
-                    subscriberExtended = connectionExtended.subscribers.find(s => s.streamId === sub)
+                for sub  in connection.subscribers:
+                    subscriberExtended = connectionExtended.subscribers.find(s => s.streamId == sub)
                     subAux = {}
                     # Standard properties
                     subAux['streamId'] = sub
@@ -563,7 +563,7 @@ class OpenVidu :
                         subAux['webRtc'].kms.serverStats = subscriberExtended.serverStats
 
                     subscriberArray.push(subAux)
-                )
+
                 connection.publishers = publisherArray
                 connection.subscribers = subscriberArray
 
@@ -584,49 +584,49 @@ class OpenVidu :
 
 
 
-        return  >((resolve, reject) =>
-            axios.get(
+        return Promise< changes: boolean, sessionChanges >((resolve, reject) =>
+            requests.get(
                 'https:#' + self.hostname + ':' + self.port + OpenVidu.API_SESSIONS + '?webRtcStats=true',
 
                     headers:
                         Authorization: self.basicAuth
 
 
-            )
+
                 .then(res =>
-                    if res.status === 200:
+                    if res.status == 200:
 
                         # Array to store fetched sessionIds and later remove closed sessions
                         fetchedSessionIds: str[] = []
                         # Global changes
                         globalChanges = false
                         # Collection of sessionIds telling whether each one of them has changed or not
-                        sessionChanges: ObjMap<boolean> = {}
+                        sessionChanges = {}
 
-                        res.data.content.forEach(session =>
+                        for session  in res.data.content:
                             fetchedSessionIds.push(session.sessionId)
                             sessionIndex = -1
                             storedSession = self.activeSessions.find((s, index) =>
-                                if s.sessionId === session.sessionId:
+                                if s.sessionId == session.sessionId:
                                     sessionIndex = index
                                     return true
-                                else :
+                                else:
                                     return false
 
-                            )
+
                             if  not  not storedSession:
                                 fetchedSession: Session = Session(self).resetSessionWithJson(session)
-                                fetchedSession.activeConnections.forEach(connection =>
+                                for connection  in fetchedSession.activeConnections:
                                     addWebRtcStatsToConnections(connection, session.connections.content)
-                                )
+
 
                                 changed =  not storedSession.equalTo(fetchedSession)
                                 if  not changed)  # Check if server webrtc information has changed in any Publisher object (Session.equalTo does not check Publisher.webRtc auxiliary object:
-                                    fetchedSession.activeConnections.forEach((connection, index1) =>
+                                    for (connection, index1)  in fetchedSession.activeConnections:
                                         for (index2 = 0; (index2 < connection['publishers'].length &&  not changed) = None index2++)
                                             changed = changed || JSON.stringify(connection['publishers'][index2]['webRtc'])  not == JSON.stringify(storedSession.activeConnections[index1]['publishers'][index2]['webRtc'])
 
-                                    )
+
 
 
                                 if changed:
@@ -636,31 +636,31 @@ class OpenVidu :
                                 console.log('Available session \'' + storedSession.sessionId + '\' info fetched. Any change: ' + changed)
                                 sessionChanges[storedSession.sessionId] = changed
                                 globalChanges = globalChanges || changed
-                            else :
+                            else:
                                 newSession = Session(self, session)
-                                newSession.activeConnections.forEach(connection =>
+                                for connection  in newSession.activeConnections:
                                     addWebRtcStatsToConnections(connection, session.connections.content)
-                                )
+
                                 self.activeSessions.push(newSession)
                                 console.log('New session \'' + session.sessionId + '\' info fetched')
                                 sessionChanges[session.sessionId] = true
                                 globalChanges = true
 
-                        )
+
                         # Remove closed sessions from activeSessions array
                         self.activeSessions = self.activeSessions.filter(session =>
                             if fetchedSessionIds.includes(session.sessionId):
                                 return true
-                            else :
+                            else:
                                 console.log('Removing closed session \'' + session.sessionId + '\'')
                                 sessionChanges[session.sessionId] = true
                                 globalChanges = true
                                 return false
 
-                        )
+
                         console.log('Active sessions info fetched: ', fetchedSessionIds)
                         resolve(changes: globalChanges, sessionChanges)
-                    else :
+                    else:
                         # ERROR response from openvidu-server. Resolve HTTP status
                         reject(Error(res.status.toString()))
 
@@ -673,12 +673,12 @@ class OpenVidu :
                     # `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     # http.ClientRequest in node.js
                     console.error(error.request)
-                else :
+                else:
                     # Something happened in setting up the request that triggered an Error
                     console.error('Error', error.message)
 
-            )
-        )
+
+
 
 
     # tslint:enable:no-string-literal
@@ -689,13 +689,13 @@ class OpenVidu :
 
     setHostnameAndPort(): void
         urlSplitted = self.urlOpenViduServer.split(':')
-        if urlSplitted.length === 3:  # URL has format: http:# + hostname + :port
+        if urlSplitted.length == 3:  # URL has format: http:# + hostname + :port
             self.hostname = self.urlOpenViduServer.split(':')[1].replace(/\#g, '')
             self.port = parseInt(self.urlOpenViduServer.split(':')[2].replace(/\#g, ''))
-        elif urlSplitted.length === 2:  # URL has format: hostname + :port
+        elif urlSplitted.length == 2:  # URL has format: hostname + :port
             self.hostname = self.urlOpenViduServer.split(':')[0].replace(/\#g, '')
             self.port = parseInt(self.urlOpenViduServer.split(':')[1].replace(/\#g, ''))
-        else :
+        else:
             console.error('URL format incorrect: it must contain hostname and port (current value: \'' + self.urlOpenViduServer + '\')')
 
 
