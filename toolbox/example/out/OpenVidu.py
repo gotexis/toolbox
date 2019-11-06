@@ -53,16 +53,16 @@ class OpenVidu:
 
 
     """
-    Array of active sessions. This value will remain unchanged since the last time method [[OpenVidu.fetch]]
-    was called. Exceptions to self rule are:
-
+    Array of active sessions. **This value will remain unchanged since the last time method [[OpenVidu.fetch]]
+    was called**. Exceptions to self rule are:
+    *
     - Calling [[Session.fetch]] updates that specific Session status
     - Calling [[Session.close]] automatically removes the Session from the list of active Sessions
     - Calling [[Session.forceDisconnect]] automatically updates the inner affected connections for that specific Session
     - Calling [[Session.forceUnpublish]] also automatically updates the inner affected connections for that specific Session
     - Calling [[OpenVidu.startRecording]] and [[OpenVidu.stopRecording]] automatically updates the recording status of the
     Session ([[Session.recording]])
-
+    *
     To get the array of active sessions with their current actual value, you must call [[OpenVidu.fetch]] before consulting
     property [[activeSessions]]
     """
@@ -79,7 +79,7 @@ class OpenVidu:
 
     """
     Creates an OpenVidu session. You can call [[Session.getSessionId]] inside the resolved promise to retrieve the `sessionId`
-
+    *
     @returns A Promise that is resolved to the [[Session]] if success and rejected with an Error object if not.
     """
     def createSession(properties: SessionProperties)
@@ -102,10 +102,10 @@ class OpenVidu:
 
     """
     Starts the recording of a [[Session]]
-
+    *
     @param sessionId The `sessionId` of the [[Session]] you want to start recording
     @param name The name you want to give to the video file. You can access self same value in your clients on recording events (`recordingStarted`, `recordingStopped`)
-
+    *
     @returns A Promise that is resolved to the [[Recording]] if it successfully started (the recording can be stopped with guarantees) and rejected with an Error
     object if not. This Error object has as `message` property with the following values:
     - `404`: no session exists for the passed `sessionId`
@@ -197,9 +197,9 @@ class OpenVidu:
 
     """
     Stops the recording of a [[Session]]
-
+    *
     @param recordingId The `id` property of the [[Recording]] you want to stop
-
+    *
     @returns A Promise that is resolved to the [[Recording]] if it successfully stopped and rejected with an Error object if not. This Error object has as `message` property with the following values:
     - `404`: no recording exists for the passed `recordingId`
     - `406`: recording has `starting` status. Wait until `started` status before stopping the recording
@@ -250,9 +250,9 @@ class OpenVidu:
 
     """
     Gets an existing [[Recording]]
-
+    *
     @param recordingId The `id` property of the [[Recording]] you want to retrieve
-
+    *
     @returns A Promise that is resolved to the [[Recording]] if it successfully stopped and rejected with an Error object if not. This Error object has as `message` property with the following values:
     - `404`: no recording exists for the passed `recordingId`
     """
@@ -295,7 +295,7 @@ class OpenVidu:
 
     """
     Lists all existing recordings
-
+    *
     @returns A Promise that is resolved to an array with all existing recordings
     """
     def listRecordings()
@@ -343,9 +343,9 @@ class OpenVidu:
 
     """
     Deletes a [[Recording]]. The recording must have status `stopped`, `ready` or `failed`
-
+    *
     @param recordingId
-
+    *
     @returns A Promise that is resolved if the Recording was successfully deleted and rejected with an Error object if not. This Error object has as `message` property with the following values:
     - `404`: no recording exists for the passed `recordingId`
     - `409`: the recording has `started` status. Stop it before deletion
@@ -390,7 +390,7 @@ class OpenVidu:
     """
     Updates every property of every active Session with the current status they have in OpenVidu Server.
     After calling self method you can access the updated array of active sessions in [[activeSessions]]
-
+    *
     @returns A promise resolved to true if any Session status has changed with respect to the server, or to false if not.
     This applies to any property or sub-property of any of the sessions locally stored in OpenVidu Node Client
     """
@@ -604,7 +604,7 @@ class OpenVidu:
                                 changed =  not storedSession.def __eq__(self, fetchedSession) = None
                                 if  not changed)  # Check if server webrtc information has changed in any Publisher object (Session.equalTo does not check Publisher.webRtc auxiliary object:
                                     for (connection, index1)  in fetchedSession.activeConnections:
-                                        for (index2 = 0; (index2 < connection['publishers'].length &&  not changed) = None index2++)
+                                        for (index2 = 0; (index2 < connection['publishers'].length and  not changed) = None index2++)
                                             changed = changed || JSON.stringify(connection['publishers'][index2]['webRtc'])  not == JSON.stringify(storedSession.activeConnections[index1]['publishers'][index2]['webRtc'])
 
                                     )

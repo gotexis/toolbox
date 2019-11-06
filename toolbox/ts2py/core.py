@@ -28,6 +28,7 @@ def main(filename, out_dir):
         (r"if \((.*)\)", 'if \\1:'),
         # forEach block
         (r"(\S*)\.forEach\(?(.*)=> {", 'for \\2 in \\1:'),  # will leave closing bracket
+        (r"export (.*) from '(.*)'", "from \\2 import \\1"),
     ]
 
     print(f'Running re.remove')
@@ -88,7 +89,7 @@ def main(filename, out_dir):
         (' */', '"""'),
         ('*/', '"""'),
         # comment middle
-        ('*', ''),
+        ('* ', ''),
         ('//', '#'),
         # class identifier
         ('this', 'self'),
@@ -104,6 +105,7 @@ def main(filename, out_dir):
         ('else if', 'elif'),
         (': string', ': str'),
         ('===', '=='),
+        ('&&', 'and'),
         ('axios', 'requests'),
     ]
 

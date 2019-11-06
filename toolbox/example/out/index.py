@@ -1,12 +1,12 @@
-from './OpenVidu'
-from './OpenViduRole'
-from './Session'
-from './SessionProperties'
-from './TokenOptions'
-from './MediaMode'
-from './RecordingLayout'
-from './RecordingMode'
-from './Recording'
-from './RecordingProperties'
-from './Connection'
-from './Publisher'
+from .OpenVidu import *
+from .OpenViduRole import *
+from .Session import *
+from .SessionProperties import *
+from .TokenOptions import *
+from .MediaMode import *
+from .RecordingLayout import *
+from .RecordingMode import *
+from .Recording import *
+from .RecordingProperties import *
+from .Connection import *
+from .Publisher import *

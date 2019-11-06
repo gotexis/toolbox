@@ -32,11 +32,11 @@ class Session:
 
     """
     Array of active connections to the session. This property always initialize as an empty array and
-    will remain unchanged since the last time method [[Session.fetch]] was called. Exceptions to self rule are:
-
+    **will remain unchanged since the last time method [[Session.fetch]] was called**. Exceptions to self rule are:
+    *
     - Calling [[Session.forceUnpublish]] also automatically updates each affected Connection status
     - Calling [[Session.forceDisconnect]] automatically updates each affected Connection status
-
+    *
     To get the array of active connections with their current actual value, you must call [[Session.fetch]] before consulting
     property [[activeConnections]]
     """
@@ -79,7 +79,7 @@ class Session:
 
     """
     Gets a token associated to Session object
-
+    *
     @returns A Promise that is resolved to the _token_ if success and rejected with an Error object if not
     """
     def generateToken(tokenOptions: TokenOptions)
@@ -87,9 +87,9 @@ class Session:
 
             data = JSON.stringify(
                 session: self.sessionId,
-                role: ( not  not tokenOptions &&  not  not tokenOptions.role) ? tokenOptions.role : OpenViduRole.PUBLISHER,
-                data: ( not  not tokenOptions &&  not  not tokenOptions.data) ? tokenOptions.data : '',
-                kurentoOptions: ( not  not tokenOptions &&  not  not tokenOptions.kurentoOptions) ? tokenOptions.kurentoOptions : ,
+                role: ( not  not tokenOptions and  not  not tokenOptions.role) ? tokenOptions.role : OpenViduRole.PUBLISHER,
+                data: ( not  not tokenOptions and  not  not tokenOptions.data) ? tokenOptions.data : '',
+                kurentoOptions: ( not  not tokenOptions and  not  not tokenOptions.kurentoOptions) ? tokenOptions.kurentoOptions : ,
             )
 
             requests.post(
@@ -131,7 +131,7 @@ class Session:
 
     """
     Gracefully closes the Session: unpublishes all streams and evicts every participant
-
+    *
     @returns A Promise that is resolved if the session has been closed successfully and rejected with an Error object if not
     """
     def close()
@@ -177,9 +177,9 @@ class Session:
     """
     Updates every property of the Session with the current status it has in OpenVidu Server. This is especially useful for accessing the list of active
     connections of the Session ([[Session.activeConnections]]) and use those values to call [[Session.forceDisconnect]] or [[Session.forceUnpublish]].
-
+    *
     To update every Session object owned by OpenVidu object, call [[OpenVidu.fetch]]
-
+    *
     @returns A promise resolved to true if the Session status has changed with respect to the server, or to false if not.
             This applies to any property or sub-property of the Session object
     """
@@ -229,10 +229,10 @@ class Session:
     """
     Forces the user with Connection `connectionId` to leave the session. OpenVidu Browser will trigger the proper events on the client-side
     (`streamDestroyed`, `connectionDestroyed`, `sessionDisconnected`) with reason set to `"forceDisconnectByServer"`
-
+    *
     You can get `connection` parameter from [[Session.activeConnections]] array ([[Connection.connectionId]] for getting each `connectionId` property).
     Remember to call [[Session.fetch]] before to fetch the current actual properties of the Session from OpenVidu Server
-
+    *
     @returns A Promise that is resolved if the user was successfully disconnected and rejected with an Error object if not
     """
     def forceDisconnect(connection: str | Connection)
@@ -308,10 +308,10 @@ class Session:
     """
     Forces some user to unpublish a Stream (identified by its `streamId` or the corresponding [[Publisher]] object owning it).
     OpenVidu Browser will trigger the proper events on the client-side (`streamDestroyed`) with reason set to `"forceUnpublishByServer"`.
-
+    *
     You can get `publisher` parameter from [[Connection.publishers]] array ([[Publisher.streamId]] for getting each `streamId` property).
     Remember to call [[Session.fetch]] before to fetch the current actual properties of the Session from OpenVidu Server
-
+    *
     @returns A Promise that is resolved if the stream was successfully unpublished and rejected with an Error object if not
     """
     def forceUnpublish(publisher: str | Publisher)
@@ -333,7 +333,7 @@ class Session:
                             # Try to remove the Publisher from the Connection publishers collection
                             connection.publishers = connection.publishers.filter(pub => pub.streamId  not == streamId)
                             # Try to remove the Publisher from the Connection subscribers collection
-                            if  not  not connection.subscribers && connection.subscribers.length > 0:
+                            if  not  not connection.subscribers and connection.subscribers.length > 0:
                                 # tslint:disable:no-string-literal
                                 if  not  not connection.subscribers[0]['streamId']:
                                     # Subscriber with advanced webRtc configuration properties
@@ -495,15 +495,15 @@ class Session:
     """
     def __eq__(self, other: Session): boolean:
         equals: boolean = (
-            self.sessionId == other.sessionId &&
-            self.createdAt == other.createdAt &&
-            self.recording == other.recording &&
-            self.activeConnections.length == other.activeConnections.length &&
+            self.sessionId == other.sessionId and
+            self.createdAt == other.createdAt and
+            self.recording == other.recording and
+            self.activeConnections.length == other.activeConnections.length and
             JSON.stringify(self.properties) == JSON.stringify(other.properties)
         )
         if equals:
             i = 0 = None
-            while (equals && i < self.activeConnections.length)
+            while (equals and i < self.activeConnections.length)
                 equals = self.activeConnections[i].def __eq__(self, other.activeConnections[i])
                 i++
 
@@ -517,7 +517,7 @@ class Session:
     @hidden
     """
     removeCircularOpenViduReference(key: str, value: any)
-        if key == 'ov' && value instanceof OpenVidu:
+        if key == 'ov' and value instanceof OpenVidu:
             return
         else:
             return value

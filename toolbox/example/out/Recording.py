@@ -87,7 +87,7 @@ namespace Recording
 
         """
         The recording is starting (cannot be stopped). Some recording may not go
-		  through self status and directly reach "started" status
+		throughselfstatus and directly reach "started" status
         """
         starting = 'starting',
 
@@ -97,21 +97,21 @@ namespace Recording
         started = 'started',
 
         """
-		  The recording has stopped and is being processed. At some point it will reach
-		  "ready" status
+		Therecordinghas stopped and is being processed. At some point it will reach
+		"ready"status
 		"""
         stopped = 'stopped',
 
         """
         The recording has finished OK and is available for download through OpenVidu
-		  Server recordings endpoint:
-		  https:#YOUR_OPENVIDUSERVER_IP/recordings/RECORDING_ID/RECORDING_NAME.EXTENSION
+		Serverrecordingsendpoint:
+		https:#YOUR_OPENVIDUSERVER_IP/recordings/RECORDING_ID/RECORDING_NAME.EXTENSION
         """
         ready = 'ready',
 
         """
         The recording has failed. This status may be reached from "starting",
-		  "started" and "stopped" status
+		"started"and"stopped" status
         """
         failed = 'failed'
 

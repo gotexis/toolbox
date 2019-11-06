@@ -1,4 +1,4 @@
-from typing import List
+
 
 from .OpenViduRole import OpenViduRole
 from .Publisher import Publisher
@@ -54,7 +54,7 @@ class Connection:
     Array of Publisher objects self particular Connection is publishing to the Session (each Publisher object has one Stream, uniquely
     identified by its `streamId`). You can call [[Session.forceUnpublish]] passing any of self values as parameter
     """
-    publishers: List[Publisher] = []
+    publishers: Publisher[] = []
 
     """
     Array of streams (their `streamId` properties) self particular Connection is subscribed to. Each one always corresponds to one
@@ -84,21 +84,21 @@ class Connection:
     """
     def __eq__(self, other: Connection): boolean:
         equals: boolean = (
-            self.connectionId == other.connectionId &&
-            self.createdAt == other.createdAt &&
-            self.role == other.role &&
-            self.token == other.token &&
-            self.location == other.location &&
-            self.platform == other.platform &&
-            self.serverData == other.serverData &&
-            self.clientData == other.clientData &&
-            self.subscribers.length == other.subscribers.length &&
+            self.connectionId == other.connectionId and
+            self.createdAt == other.createdAt and
+            self.role == other.role and
+            self.token == other.token and
+            self.location == other.location and
+            self.platform == other.platform and
+            self.serverData == other.serverData and
+            self.clientData == other.clientData and
+            self.subscribers.length == other.subscribers.length and
             self.publishers.length == other.publishers.length)
         if equals:
             equals = JSON.stringify(self.subscribers) == JSON.stringify(other.subscribers)
             if equals:
                 i = 0 = None
-                while (equals && i < self.publishers.length)
+                while (equals and i < self.publishers.length)
                     equals = self.publishers[i].def __eq__(self, other.publishers[i])
                     i++
 

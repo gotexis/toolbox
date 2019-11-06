@@ -3,7 +3,7 @@
 
 """
 See [[Connection.publishers]]
-
+*
 This is a backend representation of a published media stream (see [OpenVidu Browser Stream class](/api/openvidu-browser/classes/stream.html))
 """
 class Publisher:
@@ -75,14 +75,14 @@ class Publisher:
     """
     def __eq__(self, other: Publisher): boolean:
         return (
-            self.streamId == other.streamId &&
-            self.createdAt == other.createdAt &&
-            self.hasAudio == other.hasAudio &&
-            self.hasVideo == other.hasVideo &&
-            self.audioActive == other.audioActive &&
-            self.videoActive == other.videoActive &&
-            self.frameRate == other.frameRate &&
-            self.typeOfVideo == other.typeOfVideo &&
+            self.streamId == other.streamId and
+            self.createdAt == other.createdAt and
+            self.hasAudio == other.hasAudio and
+            self.hasVideo == other.hasVideo and
+            self.audioActive == other.audioActive and
+            self.videoActive == other.videoActive and
+            self.frameRate == other.frameRate and
+            self.typeOfVideo == other.typeOfVideo and
             self.videoDimensions == other.videoDimensions
         )
 
