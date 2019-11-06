@@ -1,6 +1,7 @@
 import os
 import re
 from toolbox.ts2py.block_remove import block_remove, block_replace
+from toolbox.ts2py.transfomers import enum_transformer
 
 DEBUG = False
 
@@ -18,11 +19,15 @@ def main(filename, out_dir):
 
     regex_remove = [
         r': [A-Z]\w*<.*?>',  # remove Typescript complex types like Promise<S, T>
+        r': \w{1,}\[\]',  # remove Typescript List type such as ISomething[]
+        # note: this can be changed to using python union type, but not worth the trouble
     ]
 
     regexs = [
         # (regex_pattern (with capture group), replace_to),
+        # import syntax
         (r"import {?\s?(\w+)\s?}? from '(.*)';?", 'from \\2 import \\1'),
+        # let declare (can make include var)
         (r"let (.*);", '\\1 = None'),
         # if block
         (r"if \((.*)\)", 'if \\1:'),
@@ -54,15 +59,15 @@ def main(filename, out_dir):
         for f in found:
             f_to = re.sub(regex[1], regex[2], f)
             # protect special characters
-            f_to = f_to\
-                .replace(special_characters['[CURLY_BRACKET_START]'], '[CURLY_BRACKET_START]')\
+            f_to = f_to \
+                .replace(special_characters['[CURLY_BRACKET_START]'], '[CURLY_BRACKET_START]') \
                 .replace(special_characters['[CURLY_BRACKET_END]'], '[CURLY_BRACKET_END]')
 
             source = source.replace(f, f_to)
 
     # block remove all interface block <TS>
     source = block_remove(source, 'interface')
-    source = block_replace(source, 'enum', function)
+    source = block_replace(source, 'enum', enum_transformer)
 
     # remove necessary keywords
     unnecessary_kw = [
@@ -73,7 +78,6 @@ def main(filename, out_dir):
         '}',
         # ts keywords
         'private ',
-        # 'public ',
         'static ',
         'readonly ',
         'const ',
@@ -116,18 +120,27 @@ def main(filename, out_dir):
 
     # line by line iteration
     lines = source.splitlines()
+
+    # remove starting empty lines
+    while not lines[0].strip():
+        lines.pop(0)
+
     for (index, line) in enumerate(lines):
 
         def current():
             # return the current version of the line
             return lines[index]
 
+        def previous():
+            # return the current version of the line
+            return lines[index - 1]
+
         def become(val):
             # mutate the line to something else
             lines[index] = val
 
         # remove trailing spaces
-        become(current().rstrip())
+        become(current().rstrip().rstrip(';'))
 
         # append colon for [class, def, else]
         if current().strip().startswith(('class', 'def', 'else')):
@@ -136,12 +149,19 @@ def main(filename, out_dir):
 
         # handle function definition or prop declare in class
         if current().lstrip().startswith('public'):
-            if current().rstrip().endswith(';'):
-                # not function
-                become(current().replace('public', ''))
+            if current().rstrip().endswith('{') or '(' in current():
+                # is function
+                become(current().replace('public', 'def'))
+                if not current().rstrip().endswith(':'):
+                    become(current() + ':')
+                if previous().lstrip().startswith('def'):
+                    become(' ' * (len(previous()) - len(previous().lstrip()) + 4)
+                           + 'pass' + '\n' + current())
             else:
                 # function
-                become(current().replace('public', 'def'))
+                become(current().replace('public', '') + ' = None')
+
+                # stll not valid yet
 
         # remove line completely if it satisfy certain criteria
         if current().strip() == ')':  # dangling enclosing ) from if/for
@@ -154,11 +174,21 @@ def main(filename, out_dir):
         extra_space = (len(current()) - len(current().lstrip())) % 4
         become(current().replace(' ', '', extra_space))
 
+    # from this point source become result (or can still use source word)
+
     result = "\n".join(lines)
 
     # reset protected characters to their original ones
     for char_from, char_to in special_characters.items():
         result = result.replace(char_from, char_to)
 
+    # tokenize the whole thing to migrate pascalCase to snake_case
+    # caveat: indentation is not preserved, multispace is not handled
+    # tokenized = result.splitlines()
+    # for (index, token_line) in enumerate(tokenized):
+    #     tokenized[index] = token_line.split()
+    # print(tokenized)
+
+    # save
     with open(os.path.join(out_dir, output_name), 'w+') as out:
         out.write(result)
