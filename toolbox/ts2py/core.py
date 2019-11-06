@@ -42,7 +42,7 @@ def main(filename, out_dir):
         # ? : short if else
         (r"(\=|\:) (.*) \? (.*) \: (.*)", '\\1 \\3 if \\2 else \\4'),
         (
-            r"axios\.(post|get|put)([\s\S]*?)\.then\((.*) => {([\s\S]*?).catch",
+            r"axios\.(post|get|put|delete)([\s\S]*?)\.then\((.*) => {([\s\S]*?).catch",
             "\\3 = requests.\\1\\2\n\\4"
         ),
     ]
@@ -110,6 +110,7 @@ def main(filename, out_dir):
         ('*', ''),
         ('//', '#'),
         # class identifier
+        ('namespace', 'class'),
         ('this', 'self'),
         ('constructor(', 'def __init__(self, '),
         ('equalTo(', 'def __eq__(self, '),
@@ -185,7 +186,7 @@ def main(filename, out_dir):
                 become(current().replace('public', '') + ' = None')
 
         # special case for functions like `someFunction()`
-        if '()' in current_strip():
+        if current_strip().endswith('()'):
             if not current_strip().startswith('def'):
                 become(" " * find_indentation() + 'def ' + current_strip() + ':')
 
