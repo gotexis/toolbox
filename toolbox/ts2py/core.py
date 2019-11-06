@@ -19,6 +19,7 @@ def main(filename, out_dir):
 
     regex_remove = [
         r': [A-Z]\w*<.*?>',  # remove Typescript complex types like Promise<S, T>
+        r'[A-Z]\w*<.*?>',  # remove Typescript complex types like Promise<S, T>
         r': \w{1,}\[\]',  # remove Typescript List type such as ISomething[]
         # note: this can be changed to using python union type, but not worth the trouble
     ]
@@ -33,6 +34,12 @@ def main(filename, out_dir):
         (r"if \((.*)\)", 'if \\1:'),
         # forEach block
         (r"(\S*)\.forEach\(?(.*)=> {", 'for \\2 in \\1:'),  # will leave closing bracket
+        # ? : short if else
+        (r"(\=|\:) (.*) \? (.*) \: (.*)", '\\1 \\3 if \\2 else \\4'),
+        (
+            r"axios\.(post|get|put)([\s\S]*?)\.then\((.*) => {([\s\S]*?).catch",
+            "\\3 = requests.\\1\\2\n\\4"
+        ),
     ]
 
     print(f'Running re.remove')
@@ -55,6 +62,7 @@ def main(filename, out_dir):
 
     print(f'Running nested re.sub')
     for regex in regex_findall:
+        # problem with below not handling nested object.
         found = re.findall(regex[0], source)
         for f in found:
             f_to = re.sub(regex[1], regex[2], f)
@@ -83,6 +91,7 @@ def main(filename, out_dir):
         'const ',
         'let ',
         'var ',
+        'not  not',
     ]
 
     replaces = [
@@ -109,6 +118,8 @@ def main(filename, out_dir):
         ('else if', 'elif'),
         (': string', ': str'),
         ('===', '=='),
+        ('||', 'or'),
+        # library
         ('axios', 'requests'),
     ]
 
@@ -131,41 +142,52 @@ def main(filename, out_dir):
             # return the current version of the line
             return lines[index]
 
-        def previous():
+        def current_strip():
             # return the current version of the line
+            return current().strip()
+
+        def previous():
+            # return the current version of the last line
             return lines[index - 1]
 
         def become(val):
-            # mutate the line to something else
+            # mutate current line to something else
             lines[index] = val
+
+        def find_indentation(val=current()):
+            return len(current()) - len(current().lstrip())
 
         # remove trailing spaces
         become(current().rstrip().rstrip(';'))
 
         # append colon for [class, def, else]
-        if current().strip().startswith(('class', 'def', 'else')):
-            if not current().strip().endswith(':'):
+        if current_strip().startswith(('class', 'def', 'else')):
+            if not current_strip().endswith(':'):
                 become(current() + ':')
 
         # handle function definition or prop declare in class
-        if current().lstrip().startswith('public'):
-            if current().rstrip().endswith('{') or '(' in current():
+        if current_strip().startswith('public'):
+            if current_strip().endswith('{') or '(' in current():
                 # is function
                 become(current().replace('public', 'def'))
                 if not current().rstrip().endswith(':'):
                     become(current() + ':')
                 if previous().lstrip().startswith('def'):
-                    become(' ' * (len(previous()) - len(previous().lstrip()) + 4)
+                    become(' ' * (find_indentation(previous()) + 4)
                            + 'pass' + '\n' + current())
             else:
                 # function
                 become(current().replace('public', '') + ' = None')
 
-                # stll not valid yet
+        if '()' in current_strip():
+            if not current_strip().startswith('def'):
+                become(" " * find_indentation() + 'def ' + current_strip() + ':')
+
+        # stll not valid yet
 
         # remove line completely if it satisfy certain criteria
-        if current().strip() == ')':  # dangling enclosing ) from if/for
-            become('')
+        # if current().strip() == ')':  # dangling enclosing ) from if/for
+        #     become('')
 
         # remove triling comma at the last because it was still useful before
         become(current().rstrip(';'))
