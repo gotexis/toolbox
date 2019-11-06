@@ -8,6 +8,11 @@ DEBUG = False
 
 def main(filename, out_dir):
     output_name = os.path.basename(filename).replace('.ts', '.py')
+
+    # handle index naming convention
+    if output_name == 'index.py':
+        output_name = '__init__.py'
+
     with open(filename) as f:
         source = f.read()
 
@@ -62,7 +67,7 @@ def main(filename, out_dir):
 
     print(f'Running nested re.sub')
     for regex in regex_findall:
-        # problem with below not handling nested object.
+        # todo: problem with below not handling nested object.
         found = re.findall(regex[0], source)
         for f in found:
             f_to = re.sub(regex[1], regex[2], f)
@@ -176,9 +181,10 @@ def main(filename, out_dir):
                     become(' ' * (find_indentation(previous()) + 4)
                            + 'pass' + '\n' + current())
             else:
-                # function
+                # not function, but a type declaration
                 become(current().replace('public', '') + ' = None')
 
+        # special case for functions like `someFunction()`
         if '()' in current_strip():
             if not current_strip().startswith('def'):
                 become(" " * find_indentation() + 'def ' + current_strip() + ':')
@@ -193,7 +199,7 @@ def main(filename, out_dir):
         become(current().rstrip(';'))
 
         # trim irregular indentation
-        extra_space = (len(current()) - len(current().lstrip())) % 4
+        extra_space = find_indentation() % 4
         become(current().replace(' ', '', extra_space))
 
     # from this point source become result (or can still use source word)
