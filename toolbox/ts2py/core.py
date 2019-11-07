@@ -39,6 +39,7 @@ def main(filename, out_dir):
         (r"if \((.*)\)", 'if \\1:'),
         # forEach block
         (r"(\S*)\.forEach\(?(.*)=> {", 'for \\2 in \\1:'),  # will leave closing bracket
+        (r"export (.*) from '(.*)'", "from \\2 import \\1"),
         # ? : short if else
         (r"(\=|\:) (.*) \? (.*) \: (.*)", '\\1 \\3 if \\2 else \\4'),
         (
@@ -107,7 +108,7 @@ def main(filename, out_dir):
         (' */', '"""'),
         ('*/', '"""'),
         # comment middle
-        ('*', ''),
+        ('* ', ''),
         ('//', '#'),
         # class identifier
         ('namespace', 'class'),
@@ -126,6 +127,7 @@ def main(filename, out_dir):
         ('===', '=='),
         ('||', 'or'),
         # library
+        ('&&', 'and'),
         ('axios', 'requests'),
     ]
 
