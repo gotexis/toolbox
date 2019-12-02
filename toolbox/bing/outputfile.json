@@ -1,0 +1,292 @@
+{
+    "_type": "SearchResponse",
+    "queryContext": {
+        "originalQuery": "site: sydney.edu.au master of commerce"
+    },
+    "webPages": {
+        "webSearchUrl": "https://www.bing.com/search?q=site%3a+sydney.edu.au+master+of+commerce",
+        "totalEstimatedMatches": 63800,
+        "value": [
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.0",
+                "name": "<b>Master of Commerce</b> - The University of Sydney",
+                "url": "https://sydney.edu.au/courses/courses/pc/master-of-commerce.html",
+                "about": [
+                    {
+                        "name": "Master of Commerce"
+                    }
+                ],
+                "isFamilyFriendly": true,
+                "displayUrl": "https://<b>sydney.edu.au</b>/courses/courses/pc/<b>master-of-commerce</b>.html",
+                "snippet": "The <b>Master</b> of <b>Commerce</b> offers great choice and flexibility, allowing you to develop the knowledge and transferable skills to advance your career in a wide range of ...",
+                "deepLinks": [
+                    {
+                        "name": "Units of Study",
+                        "url": "https://sydney.edu.au/courses/uos-landing.html"
+                    },
+                    {
+                        "name": "Finance",
+                        "url": "https://sydney.edu.au/courses/subject-areas/spec/finance.html"
+                    },
+                    {
+                        "name": "Accounting",
+                        "url": "https://sydney.edu.au/courses/subject-areas/spec/accounting.html"
+                    },
+                    {
+                        "name": "Sydney.Edu.au",
+                        "url": "http://sydney.edu.au/courses/master-of-commerce",
+                        "snippet": "Moved Permanently. The document has moved here."
+                    }
+                ],
+                "dateLastCrawled": "2018-07-28T07:56:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.1",
+                "name": "<b>The Business School</b> - University of Sydney",
+                "url": "http://sydney.edu.au/business/course/MCom",
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/business/course/MCom",
+                "snippet": "The Business School. APPLICATION FOR <b>MASTER</b> OF <b>COMMERCE</b> DISSERTATION . ESSENTIAL INFORMATION In order to be considered for the dissertation, you need to:",
+                "deepLinks": [
+                    {
+                        "name": "Master of Commerce",
+                        "url": "https://sydney.edu.au/courses/courses/pc/master-of-commerce.html",
+                        "snippet": "The <b>Master of Commerce</b> offers great choice and flexibility, allowing you to develop the knowledge and transferable skills to advance your career in a wide range of ..."
+                    },
+                    {
+                        "name": "Sydney.Edu.au",
+                        "url": "http://sydney.edu.au/courses/master-of-commerce",
+                        "snippet": "Moved Permanently. The document has moved here."
+                    }
+                ],
+                "dateLastCrawled": "2018-07-27T01:33:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.2",
+                "name": "<b>sydney.edu.au</b>",
+                "url": "http://sydney.edu.au/courses/master-of-commerce",
+                "about": [
+                    {
+                        "name": "Master of Commerce"
+                    },
+                    {
+                        "name": "Master of Commerce"
+                    }
+                ],
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/courses/<b>master-of-commerce</b>",
+                "snippet": "Moved Permanently. The document has moved here.",
+                "dateLastCrawled": "2018-07-26T17:42:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.3",
+                "name": "<b>Course</b> Options - The University of Sydney",
+                "url": "https://sydneystudent.sydney.edu.au/sitsvision/courses/dmacommer3000-0.htm",
+                "isFamilyFriendly": true,
+                "displayUrl": "https://sydneystudent.<b>sydney.edu.au</b>/sitsvision/<b>courses</b>/dmacommer...",
+                "snippet": "Course choice: <b>Master</b> of <b>Commerce</b>. Course application opening and closing dates can be different for international and domestic students.",
+                "dateLastCrawled": "2018-07-25T12:23:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.4",
+                "name": "Accreditation - The University of Sydney Business School",
+                "url": "http://sydney.edu.au/business/accounting/accreditation",
+                "about": [
+                    {
+                        "name": "University of Sydney Business School"
+                    }
+                ],
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/business/accounting/accreditation",
+                "snippet": "Students who complete the <b>Master</b> of <b>Commerce</b> with a ... Accounting Liaison Officer to provide further advice on professional accounting accreditation. ...",
+                "dateLastCrawled": "2018-07-25T00:22:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.5",
+                "name": "<b>Progression guides</b> - Business School Postgraduate - The ...",
+                "url": "http://sydney.edu.au/handbooks/business_school_PG/coursework/commerce/commerce_progressions.shtml",
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/handbooks/business_school_PG/coursework/<b>commerce</b>/...",
+                "snippet": "Progression guides. The following tables show course progression examples for a student enrolled in the <b>Master</b> of <b>Commerce</b>, the Graduate Diploma in ...",
+                "dateLastCrawled": "2018-07-25T20:06:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.6",
+                "name": "Table of <b>postgraduate units of study: Commerce</b> - Business ...",
+                "url": "http://sydney.edu.au/handbooks/business_school_PG/coursework/commerce/commerce_units_table.shtml",
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/handbooks/business_school_PG/coursework/<b>commerce</b>/...",
+                "snippet": "Students enrolled in the <b>Master</b> of <b>Commerce</b> and Graduate Diploma in <b>Commerce</b> must complete the core unit of study listed in the following table in their ...",
+                "dateLastCrawled": "2018-07-27T06:04:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.7",
+                "name": "<b>Course structures</b> - Business School Postgraduate - The ...",
+                "url": "http://sydney.edu.au/handbooks/business_school_PG/coursework/commerce/commerce_structure.shtml",
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/handbooks/business_school_PG/coursework/<b>commerce</b>/...",
+                "snippet": "Course structures Course requirements 1. <b>Master</b> of <b>Commerce</b>. To be awarded the <b>Master</b> of <b>Commerce</b>, students complete units of study totalling 96 credit ...",
+                "dateLastCrawled": "2018-07-20T08:49:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.8",
+                "name": "<b>Commerce</b> - Business School Postgraduate - The University ...",
+                "url": "http://sydney.edu.au/handbooks/business_school_PG/coursework/commerce/commerce.shtml",
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/handbooks/business_school_PG/coursework/<b>commerce</b>/...",
+                "snippet": "Students commencing the <b>Master</b> of <b>Commerce</b> may be eligible for recognition of prior learning for certified prior business study or relevant work experience.",
+                "dateLastCrawled": "2018-07-26T10:19:00.0000000Z",
+                "language": "en"
+            },
+            {
+                "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.9",
+                "name": "<b>Finance</b> - The University of Sydney Business School",
+                "url": "http://sydney.edu.au/business/study/courses/postgraduate/theme/finance",
+                "isFamilyFriendly": true,
+                "displayUrl": "<b>sydney.edu.au</b>/business/study/courses/postgraduate/theme/<b>finance</b>",
+                "snippet": "Understanding finance is critical to the success of corporations and informs decisions at all levels of business. <b>Master</b> of <b>Commerce</b>.",
+                "dateLastCrawled": "2018-07-26T20:54:00.0000000Z",
+                "language": "en"
+            }
+        ]
+    },
+    "relatedSearches": {
+        "id": "https://api.cognitive.microsoft.com/api/v7/#RelatedSearches",
+        "value": [
+            {
+                "text": "master of commerce deakin",
+                "displayText": "master of commerce <b>deakin</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+deakin"
+            },
+            {
+                "text": "master of commerce unsw",
+                "displayText": "master of commerce <b>unsw</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+unsw"
+            },
+            {
+                "text": "master of commerce usyd",
+                "displayText": "master of commerce <b>usyd</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+usyd"
+            },
+            {
+                "text": "master of commerce uwa",
+                "displayText": "master of commerce <b>uwa</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+uwa"
+            },
+            {
+                "text": "master of commerce csu",
+                "displayText": "master of commerce <b>csu</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+csu"
+            },
+            {
+                "text": "master of commerce anu",
+                "displayText": "master of commerce <b>anu</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+anu"
+            },
+            {
+                "text": "master of commerce uq",
+                "displayText": "master of commerce <b>uq</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+uq"
+            },
+            {
+                "text": "master of commerce curtin university",
+                "displayText": "master of commerce <b>curtin</b> <b>university</b>",
+                "webSearchUrl": "https://www.bing.com/search?q=master+of+commerce+curtin+university"
+            }
+        ]
+    },
+    "rankingResponse": {
+        "mainline": {
+            "items": [
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 0,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.0"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 1,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.1"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 2,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.2"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 3,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.3"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 4,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.4"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 5,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.5"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 6,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.6"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 7,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.7"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 8,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.8"
+                    }
+                },
+                {
+                    "answerType": "WebPages",
+                    "resultIndex": 9,
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.9"
+                    }
+                }
+            ]
+        },
+        "sidebar": {
+            "items": [
+                {
+                    "answerType": "RelatedSearches",
+                    "value": {
+                        "id": "https://api.cognitive.microsoft.com/api/v7/#RelatedSearches"
+                    }
+                }
+            ]
+        }
+    }
+}

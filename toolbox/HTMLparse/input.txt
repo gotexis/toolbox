@@ -1,0 +1,98 @@
+<ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+                         <li class="treeview">
+                <a href="https://www.condat.com.au/condat/64/users/dashboard">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                </a>
+            </li>
+
+                         <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span>Clients</span>
+                    <span class="label label-primary pull-right">0</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="https://www.condat.com.au/condat/64/clients"><i class="fa fa-circle-o"></i> View All</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/clients/create"><i class="fa fa-circle-o"></i> Add</a></li>
+                                        <li><a href="https://www.condat.com.au/condat/64/import"><i class="fa fa-circle-o"></i> Import</a></li>                    <li><a href="https://www.condat.com.au/condat/64/client/due"><i class="fa fa-circle-o"></i> Due Payments</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/client/search"><i class="fa fa-circle-o"></i> Filter Clients</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span>Applications</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="https://www.condat.com.au/condat/64/applications/enquiry"><i class="fa fa-circle-o"></i> Application List</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/no-applications"><i class="fa fa-circle-o"></i> No Application Clients</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/applications/search"><i class="fa fa-circle-o"></i> Filter Application</a></li>
+                </ul>
+            </li>
+
+                                     <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-money"></i>
+                    <span>Accounts</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="https://www.condat.com.au/condat/64/client_invoice_report/invoice_pending"><i class="fa fa-circle-o"></i> Client Invoices</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/college_invoice_report/invoice_pending"><i class="fa fa-circle-o"></i> Institute Invoices</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/subagent_invoice_report/invoice_pending"><i class="fa fa-circle-o"></i> Sub Agent Invoices</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/client/payments"><i class="fa fa-circle-o"></i> Payments</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/college_invoice_report/invoice_grouped"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
+                </ul>
+            </li>
+                                     <li class="treeview  active">
+                <a href="#">
+                    <i class="fa fa-building"></i>
+                    <span>Institutions</span>
+                    <span class="label label-primary pull-right">0</span>
+                </a>
+                <ul class="treeview-menu menu-open" style="display: block;">
+                    <li><a href="https://www.condat.com.au/condat/64/institute"><i class="fa fa-circle-o"></i> Institute List</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/institute/create"><i class="fa fa-circle-o"></i> Add Institutes</a></li>                    <li><a href="https://www.condat.com.au/condat/64/course/search"><i class="fa fa-circle-o"></i> Search Course</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/institutes/import"><i class="fa fa-circle-o"></i> Import from system</a></li>
+                </ul>
+            </li>
+                                    <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span>Agents</span>
+                    <span class="label label-primary pull-right">0</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="https://www.condat.com.au/condat/64/agents"><i class="fa fa-circle-o"></i> View All</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/agents/create"><i class="fa fa-circle-o"></i> Add</a></li>
+                </ul>
+            </li>
+                                    <li class=" "><a href="https://www.condat.com.au/condat/64/settings/enquiry_link"><i class="fa fa-qrcode"></i> Client Enquiry Plugin</a></li>
+
+                         <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span>Users </span>
+                    <span class="label label-primary pull-right">1</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="https://www.condat.com.au/condat/64/user"><i class="fa fa-circle-o"></i> View All</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/user/create"><i class="fa fa-circle-o"></i> Add</a></li>
+                </ul>
+            </li>
+
+
+                                    <li class="treeview ">
+                <a href="#">
+                    <i class="fa fa-gears"></i>
+                    <span>Settings</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="https://www.condat.com.au/condat/64/settings/company"><i class="fa fa-circle-o"></i> Company Profile</a></li>
+                                                            <li><a href="https://www.condat.com.au/condat/64/settings/send_email"><i class="fa fa-circle-o"></i> Send Email</a></li>
+                    <li><a href="https://www.condat.com.au/condat/64/settings/bank"><i class="fa fa-circle-o"></i> Bank Details</a></li>
+                    <li id="renew-subscription"><a href="https://www.condat.com.au/condat/64/subscription/renew"><i class="fa fa-circle-o"></i> Renew Subscription</a></li>
+                </ul>
+            </li>
+                                        </ul>
